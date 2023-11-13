@@ -32,11 +32,19 @@ class MenuBuilder:
             if restriction and restriction not in dish.get_restrictions():
                 continue
 
+            # Verificar a disponibilidade de ingredientes em estoque
+            recipe_available = self.inventory.check_recipe_availability(
+                dish.recipe
+                )
+
+            if not recipe_available:
+                continue
+
             dish_info = {
                 "dish_name": dish.name,
                 "ingredients": [
                     ingredient.name for ingredient in dish.recipe.keys()
-                    ],
+                ],
                 "price": dish.price,
                 "restrictions": list(dish.get_restrictions()),
             }
